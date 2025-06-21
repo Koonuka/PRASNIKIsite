@@ -1,0 +1,1087 @@
+html {
+    font-size: 24px; /* Further increased base font size */
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+:root {
+	--index: calc(1vw + 1vh);
+	--swiper-theme-color: #4b4d53;
+	--swiper-navigation-size: 30px;
+	--swiper-navigation-sides-offset: 40px;
+	--swiper-pagination-bottom: 20px;
+	--swiper-pagination-color: #afb3c0;
+	--swiper-pagination-bullet-inactive-color: #36373c;
+	--swiper-pagination-bullet-inactive-opacity: 1;
+}
+
+:root {
+    --primary-color: #7FFF00; /* Ярко-голубой */
+    --secondary-color: #f2f2f2; /* Светло-серый */
+    --text-color-light: rgba(255, 255, 255, 0.9); /* Почти белый */
+    --text-color-dark: #333; /* Темно-серый */
+    --accent-color: #FF8C00; /* Яркий розовый/малиновый */
+}
+
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif; /* Более читаемый шрифт */
+    background-color: #121212; /* Темный фон для контраста */
+    color: var(--text-color-light);
+    overflow: hidden; /* Предотвращаем прокрутку */
+}
+
+.slider {
+    height: 100vh;
+    box-shadow: inset 0 50px 50px rgba(0, 0, 0, 0.5), inset 0 -50px 50px rgba(0, 0, 0, 0.5); /* Более мягкая тень */
+    position: relative; /* Для позиционирования навигации */
+}
+
+.slider .slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Анимация фона при переключении слайда */
+    animation: backgroundFade 1s ease-in-out;
+}
+
+@keyframes backgroundFade {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+.slide__content {
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Плавное появление и движение */
+    transform: translateY(20px); /* Начальное смещение вниз */
+}
+
+.swiper-slide-active .slide__content {
+    opacity: 1;
+    transform: translateY(0); /* Возвращаем на место при активации */
+}
+
+.slide__content h2 {
+    font-size: calc(var(--index) * 2.0); /* Немного больше */
+    text-transform: uppercase;
+    letter-spacing: calc(var(--index) * 0.85); /* Увеличенный интервал */
+    margin-bottom: calc(var(--index) * 2.5); /* Больше отступ */
+    position: relative;
+    color: var(--primary-color); /* Яркий цвет для заголовка */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Тень для заголовка */
+    
+}
+
+.slide__content h2::after {
+    content: '';
+    height: 2px; /* Толще линия */
+    width: 90%; /* Длиннее линия */
+    background-color: var(--accent-color); /* Яркий акцент */
+    position: absolute;
+    left: 25%; /* Сдвиг влево от центра */
+    bottom: calc(var(--index) * -1.2); /* Ближе к тексту */
+    animation: lineAnimation 2s linear infinite alternate; /* Анимированная линия */
+}
+
+@keyframes lineAnimation {
+    from { width: 30%; }
+    to { width: 50%; }
+}
+
+
+.slide__content p {
+    font-size: calc(var(--index) * 1); /* Немного больше */
+    text-transform: uppercase;
+    color: var(--text-color-light);
+    letter-spacing: calc(var(--index) * 0.3); /* Больше интервал */
+    margin-bottom: calc(var(--index) * 2.8); /* Больше отступ */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Тень для текста */
+}
+
+button {
+    --button-color: var(--accent-color); /* Яркий цвет кнопки */
+    padding: 11px 45px; /* Больше места */
+    font-size: 17px; /* Больше шрифт */
+    border-radius: 12em; /* Более закругленные края */
+    background-color: transparent;
+    border: 3px solid var(--button-color); /* Толще обводка */
+    color: var(--button-color);
+    text-transform: uppercase;
+    letter-spacing: 0.25rem; /* Больше интервал */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Плавные переходы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Тень для кнопки */
+}
+
+button:hover {
+    background-color: var(--button-color);
+    color: var(--text-color-light);
+    transform: translateY(-3px); /* Поднимаем кнопку при наведении */
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.slider-navigation {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 20px; /* Ближе к низу */
+    left: 50%;
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    display: flex;
+    gap: 15px; /* Расстояние между кнопками */
+}
+
+.slider-navigation > * {
+    border: 2px solid var(--accent-color); /* Яркий акцент */
+    border-radius: 12em; /* Больше закругление */
+    width: 60px; /* Больше размер */
+    height: 60px; /* Больше размер */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-light);
+    font-size: 1.5em; /* Больше размер стрелок */
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Плавные переходы */
+}
+
+.slider-navigation > *:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    border-color: var(--primary-color);
+}
+
+.video-background {
+    position: fixed;
+    width: 100%; /* Растягиваем на весь экран */
+    height: 100%; /* Растягиваем на весь экран */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover; /* Видео занимает весь контейнер, обрезая, если нужно */
+    opacity: 0.7;
+    transition: opacity 2s ease-out;
+    z-index: -1; /* Под текстом */
+}
+
+.video-background.change {
+    opacity: 1;
+}
+
+/* Interface */
+
+.container {
+    margin: auto;
+    max-width: 840px;
+}
+
+.container-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Выравнивание по вертикали */
+    padding: 1rem 0; /* Отступы сверху и снизу */
+}
+
+.top-line {
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+    padding: 1.7rem 0;
+    top: 0;
+    left: 0;
+}
+
+.logo {
+    border: 3px solid var(--primary-color); /* Более яркая обводка */
+    border-radius: 12em; /* Больше закругление */
+    width: 60px; /* Больше размер */
+    height: 60px; /* Больше размер */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85; /* Более видимый */
+    transition: transform 0.3s ease;
+    
+}
+
+.logo:hover {
+    transform: rotate(360deg); /* Анимация вращения при наведении */
+}
+
+.logo img {
+    width: 30px; /* Больше размер */
+    height: auto;
+}
+
+.main-mnu {
+    display: flex;
+    margin-top: 15px;
+    font-size: 20px;
+    margin-right: -16px;
+    position: relative;
+    z-index: 1;
+    padding: 10px 20px; /* Добавим внутренние отступы, чтобы фон не прилегал к краям */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Добавим небольшую тень */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая белая граница */
+}
+
+.main-mnu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    z-index: -1;
+    backdrop-filter: blur(5px); /* Добавим эффект размытия фона (может не работать во всех браузерах) */
+    transition: background-color 0.3s ease; /* Анимируем изменение цвета фона */
+}
+
+.main-mnu:hover::before {
+    background-color: rgba(0, 0, 0, 0.7); /* Затемняем фон при наведении на меню */
+}
+
+.main-mnu li {
+    list-style: none;
+    margin: 0 15px;
+}
+
+.main-mnu a {
+    color: var(--text-color-light);
+    padding: 16px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-decoration: none;
+    font-weight: 300;
+    outline: none;
+    transition: color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease; /* Добавляем transition для box-shadow */
+    border-radius: 5px; /* Закругляем углы ссылок */
+    display: inline-block; /* Чтобы box-shadow работал корректно */
+}
+
+.main-mnu a:hover {
+    text-decoration: none;
+    color: var(--primary-color);
+    transform: scale(1.1);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3); /* Добавим тень при наведении на ссылки */
+}
+
+.main-mnu a:active {
+    transform: scale(0.95); /* Уменьшаем размер при клике */
+    box-shadow: none; /* Убираем тень при клике */
+}
+
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main-mnu {
+        flex-direction: column; /* Меню в столбик на маленьких экранах */
+        align-items: center;
+    }
+
+    .main-mnu li {
+        margin: 10px 0;
+    }
+
+    .top-line {
+        position: static; /* Убираем фиксацию на маленьких экранах */
+        text-align: center;
+    }
+
+    .container-top {
+        flex-direction: column; /* Лого и меню в столбик */
+        align-items: center;
+    }
+}
+
+
+/* Содержимое модального окна */
+.modal-content {
+    background-color: #2c2c2c;
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /*  Увеличен начальный масштаб */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    max-width: 80%; /*  Увеличение максимальной ширины */
+    max-height: 80%; /*  Увеличение максимальной высоты */
+    overflow: auto;   /* Добавляем прокрутку */
+    opacity: 0;
+    animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8); /*  Согласованный начальный масштаб */
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+
+.close {
+    color: white; /* Цвет креста */
+    float: right; /* Выравнивание вправо */
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer; /* Указатель при наведении */
+}
+
+.close:hover,
+.close:focus {
+    color: #ff4c4c; /* Изменение цвета на красный при наведении */
+}
+
+h2 {
+    text-align: center; /* Центрирование заголовка */
+    margin-bottom: 15px; /* Отступ снизу */
+    color: #ffffff; /* Цвет заголовка */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Шрифт, похожий на macOS */
+    font-weight: bold; /* Жирный текст */
+}
+
+#results {
+    color: #c8c8c8; /* Цвет текста результатов */
+    text-align: center; /* Центрирование текста результатов */
+    margin-top: 5px; /* Отступ сверху */
+}
+
+/* Анимация появления для результатов */
+.result-item {
+    margin: 10px 0; /* Отступ сверху и снизу для каждого результата */
+    padding: 20px; /* Внутренние отступы для лучшего восприятия */
+    background-color: #2c2c2e; /* Цвет фона для результатов, похожий на macOS */
+    border-radius: 15px; /* Закругление углов для результата */
+    opacity: 0; /* Начальная прозрачность для анимации */
+    transform: translateY(20px); /* Начальное положение для анимации */
+    animation: resultFadeIn 0.6s forwards, typing 2s steps(40, end) forwards; /* Анимация печатания */
+    animation-delay: calc(0.1s * var(--i)), 0.5s; /* Задержка анимации для каждого элемента и анимации печатания */
+    white-space: nowrap; /* Предотвращаем перенос текста на новую строку */
+    overflow: hidden; /* Скрываем текст, выходящий за границы элемента */
+    width: calc(100% - 20px); /* Устанавливаем ширину на 100% с учетом отступов */
+    font-family: 'Courier New', monospace; /* Эффект печатной машинки */
+    font-size: 18px; /* Увеличенный размер шрифта */
+    letter-spacing: 0.05em; /* Небольшой межбуквенный интервал */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Улучшенная тень для текста */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Мягкая тень для элемента результата */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавное изменение при наведении */
+}
+
+.result-item:hover {
+    transform: translateY(-5px); /* Подъем элемента при наведении */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* Увеличенная тень при наведении */
+}
+
+@keyframes resultFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0; /* Начальная ширина */
+    }
+    to {
+        width: 100%; /* Конечная ширина */
+    }
+}
+
+
+
+
+
+
+/* Оформление поля поиска страны */
+#country-search {
+    width: 100%; /* Полная ширина */
+    max-width: 400px; /* Максимальная ширина */
+    padding: 12px; /* Отступы внутри поля */
+    margin-bottom: 15px; /* Отступ снизу */
+    margin-left: 0; /* Устанавливаем левый margin в 0 */
+    border: 2px solid #4b4d53; /* Цвет рамки */
+    border-radius: 8px; /* Закругленные уголки */
+    background-color: #2c2c2c; /* Цвет фона поля */
+    color: #fff; /* Цвет текста */
+    font-size: 16px; /* Размер шрифта */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Плавный переход */
+}
+
+/* Эффект при наведении на поле поиска страны */
+#country-search:hover {
+    border-color: #555; /* Светлее цвет рамки при наведении */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* Эффект тени */
+}
+
+/* Эффект при фокусировке на поле поиска */
+#country-search:focus {
+    outline: none; /* Убираем стандартный контур рамки */
+    border-color: #00aaff; /* Цвет рамки при фокусе */
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.5); /* Яркая тень при фокусе */
+}
+
+/* Псевдоэлемент для подсказки */
+#country-search::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Цвет подсказки */
+    font-style: italic; /* Курсив для подсказки */
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Основная структура списка праздников */
+#holidays-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;                         /* Разрешить перенос элементов на новые строки */
+    justify-content: space-evenly;          /* Равномерное распределение элементов */
+    gap: 8px;                               /* Маленький зазор между элементами */
+    margin: 0 auto;                         /* Центральная позиция */
+    max-width: 100%;                        /* Ширина соответствует родителю */
+    font-size: 12px;                        /* Общий шрифт чуть мельче */
+}
+
+/* Отдельный элемент праздника */
+.holiday-item {
+    flex: 1 1 calc(20% - 8px);             /* Меньше пространство, больше элементов в одном ряду */
+    max-width: 40%;                         /* Максимально допустимая ширина элемента */
+    height: auto;                           /* Высота определяется контентом */
+    background-color: #ffffff;              /* Светлый белый фон */
+    color: #333333;                         /* Темный серый цвет текста */
+    padding: 8px;                           /* Минимальные отступы */
+    border-radius: 6px;                     /* Более закругленные уголки */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Очень легкая тень */
+    transition: transform 0.2s ease-in-out; /* Эффект плавного увеличения при наведении */
+    cursor: pointer;                        /* Курсор при наведении */
+    position: relative;                     /* Позиция относительно себя */
+    line-height: 1.2;                       /* Уплотненный межстрочный интервал */
+    white-space: nowrap;                    /* Название праздника в одну строчку */
+    overflow: hidden;                       /* Обрезка длинного текста */
+    text-overflow: ellipsis;               /* Многоточие при обрезке */
+}
+
+/* Эффекты при наведении мышью */
+/* Эффекты при наведении мышью на элемент праздника */
+.holiday-item:hover {
+    transform: scale(1.03);                 /* Увеличение масштаба при наведении */
+    z-index: 1;                             /* Поднимаемся вверх среди остальных элементов */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Более выразительная тень для глубины */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход эффектов */
+    
+    /* Дополнительные стили для улучшения внешнего вида */
+    background-color: #444;                 /* Изменение фона, чтобы выделиться */
+    color: #ffcc00;                         /* Освежение цвета текста */
+    border: 2px solid #ffcc00;              /* Тонкая рамка, чтобы подчеркнуть элемент */
+    border-radius: 12px;                    /* Скругленные углы для современного вида */
+
+    /* Анимация "выпрыгивания" для акцента */
+    animation: bounce 0.5s;                /* Применение анимации */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: scale(1.03);              
+    }
+    40% {
+        transform: scale(1.1);               /* Увеличение на максимум во время анимации */
+    }
+}
+
+/* Дата и страна - минималистичный стиль */
+.holiday-date,
+.holiday-country {
+    font-size: 10px;                        /* Ещё меньший шрифт */
+    opacity: 0.6;                           /* Полупрозрачность */
+    display: block;                         /* Блокация, чтобы поля располагались друг под другом */
+    margin-top: 3px;                        /* Очень маленький отступ */
+}
+
+/* Заголовок мероприятия */
+.holiday-name {
+    font-weight: bold;                      /* Выделяется жирностью */
+    font-size: inherit;                     /* Наследует общий размер шрифта */
+}
+
+/* Версия для смартфонов и планшетов */
+@media (max-width: 768px) {
+    .holiday-item {
+        flex: 1 1 calc(33.33% - 8px);      /* Только три элемента в строке на средних экранах */
+    }
+}
+
+@media (max-width: 480px) {
+    .holiday-item {
+        flex: 1 1 100%;                     /* На совсем мелких экранах один элемент в строке */
+    }
+}
+/* Анимация */
+.animate__animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+  }
+  
+  /* Дополнительные стили для плавности */
+  .slide {
+      position: relative; /* Это важно для правильного позиционирования */
+  }
+  .contact-slide {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Мягкий градиент */
+    color: #333;
+    text-align: center;
+    padding: 20px; /* Отступы внутри слайда */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Небольшая тень */
+  }
+  
+  .contact-title {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: #2c3e50; /* Более насыщенный цвет заголовка */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Легкая тень для текста */
+  }
+  
+  .contact-subtitle {
+    font-size: 1.2em;
+    color: #777; /* Приглушенный цвет подзаголовка */
+    margin-bottom: 20px;
+  }
+  
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+  }
+  
+  .contact-item i {
+    margin-right: 10px;
+    color: #3498db; /* Яркий цвет для иконок */
+    font-size: 1.3em; /* Чуть больше размер иконок */
+  }
+  
+  .contact-item a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease; /* Плавный переход цвета при наведении */
+  }
+  
+  .contact-item a:hover {
+    color: #3498db;
+  }
+  
+/* Оформление футера */
+.footer {
+    margin-top: 30px; /* Отступ сверху */
+    padding: 20px 0; /* Отступы сверху и снизу */
+    background: linear-gradient(45deg, red, #7928ca); /* Градиентный фон */
+    color: #fff; /* Цвет текста */
+    text-align: center; /* Выравнивание текста по центру */
+    font-size: 14px; /* Размер шрифта */
+    overflow: hidden; /* Прячем выходящие за пределы элементы */
+    position: relative; /* Для размещения абсолютных элементов */
+}
+
+/* Анимированный фон для футера */
+.footer::before {
+    content: ''; /* Создаем псевдоэлемент */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 50%; /* Центрируем по вертикали */
+    left: 50%; /* Центрируем по горизонтали */
+    width: 200%; /* Ширина псевдоэлемента */
+    height: 200%; /* Высота псевдоэлемента */
+    background: rgba(255, 255, 255, 0.1); /* Полупрозрачный фон */
+    border-radius: 50%; /* Скругленные углы */
+    transform: translate(-50%, -50%); /* Центрируем псевдоэлемент */
+    animation: rotate 10s linear infinite; /* Анимация вращения */
+}
+
+/* Анимация вращения */
+@keyframes rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg); /* Начальное состояние */
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg); /* Конечное состояние */
+    }
+}
+
+/* Элементы внутри футера */
+.footer a {
+    color: #ffffff; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+    transition: color 0.3s ease; /* Плавный переход для изменения цвета */
+}
+
+/* Эффект при наведении на ссылки в футере */
+.footer a:hover {
+    color: #ff7f50; /* Более светлый цвет при наведении */
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+  
+  .footer-content {
+    text-align: center;
+    font-size: 0.1em;
+    color: #555;
+  }
+  
+  .made-with {
+    margin-top: 10px;
+    font-style: italic;
+    color: #e74c3c; /* Красный цвет для сердца */
+  }
+  
+  /* Задержка анимации (можно добавить в HTML как data-delay="0.5s") */
+  [data-delay] {
+    animation-delay: var(--delay);
+  }
+
+.holiday-item {
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 10px; /* Более мягкое скругление */
+    color: #fff;
+    padding: 20px; /* Еще больше отступов */
+    margin-bottom: 15px; /* Больше отступ между элементами */
+    width: 100%;                 /* Занимает всю доступную ширину в колонке */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для объема */
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Плавные переходы */
+    overflow: hidden;              /* Скрываем содержимое, выходящее за границы (для анимаций) */
+    position: relative;           /* Для позиционирования псевдоэлемента */
+}
+
+@media (min-width: 768px) {
+    .holiday-item {
+        width: calc(50% - 20px);   /* Два элемента в ряд, с учетом отступов */
+        margin: 10px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .holiday-item {
+        width: calc(33.33% - 20px); /* Три элемента в ряд на больших экранах */
+    }
+}
+
+
+.holiday-item:hover {
+    transform: translateY(-5px); /* Поднимаем элемент при наведении */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Более выраженная тень при наведении */
+}
+
+.holiday-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #ffcc00, #f00, #ffcc00); /* Анимированная полоска сверху */
+    animation: highlight 5s linear infinite;
+    z-index: 1; /* Поверх фона */
+}
+
+@keyframes highlight {
+    0% { background-position: 0%; }
+    100% { background-position: 400%; }
+}
+
+
+.holiday-content {
+    display: flex;
+    flex-direction: column;      /* Размещаем элементы контента вертикально */
+    align-items: flex-start;       /* Выравнивание по левому краю */
+}
+
+.holiday-date {
+    font-weight: bold;
+    color: #ffcc00;
+    font-size: 1.2em;          /* Увеличиваем размер даты */
+    margin-bottom: 5px;         /* Отступ снизу */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Тень для читаемости */
+}
+
+.holiday-name {
+    font-size: 1.3em;          /* Еще больше шрифт для названия */
+    color: #fff;
+    margin-bottom: 5px;         /* Отступ снизу */
+}
+
+.holiday-country {
+    font-style: italic;
+    color: #ccc;
+    font-size: 1em;
+}
+
+
+/* Анимация появления элементов списка */
+#holidays-list .holiday-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Более выраженная анимация */
+    transition: transform 0.3s ease; /* Плавный переход */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Легкая тень */
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#holidays-list .holiday-item:hover {
+    transform: scale(1.05); /* Увеличение элемента */
+}
+#holidays-list .holiday-item:nth-child(even) { /* Сдвигаем анимацию для четных элементов */
+    animation-delay: 0.2s;
+}
+
+#holidays-list .holiday-item:nth-child(odd) { /* Сдвигаем анимацию для нечетных элементов */
+    animation-delay: 0.3s;
+}
+#today-date {
+    font-family: 'Montserrat', sans-serif; /* Современный шрифт */
+    font-size: 3em; /* Увеличиваем еще больше */
+    color: red; /* Белый текст на темном фоне */
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase; /* Все буквы в верхнем регистре */
+   
+
+    animation: fadeIn 2s ease-out, gradientShift 8s infinite alternate, pulse 1.5s infinite alternate;
+    position: relative; /* Для псевдоэлементов */
+    overflow: hidden; /* Обрезаем псевдоэлементы, выходящие за границы */
+}
+
+
+
+  
+  @keyframes animateLine {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer p {
+    margin: 8px 0; /* Увеличиваем отступы между параграфами */
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease; /* Плавное изменение цвета при наведении */
+  }
+  
+  .footer p:hover {
+    color: #fff; /* Цвет текста при наведении */
+  }
+  
+  .footer p i {
+    margin-right: 12px; /* Ещё больше отступ для иконки */
+    font-size: 1.3em; /* Увеличиваем размер иконки */
+    color: #81d4fa; /* Более яркий цвет иконки */
+    transition: transform 0.3s ease, color 0.3s ease; /* Плавные переходы для трансформации и цвета */
+  }
+  
+  .footer p:hover i {
+    transform: scale(1.1); /* Увеличиваем иконку при наведении */
+    color: #b3e5fc; /* Ещё более яркий цвет иконки при наведении */
+  }
+  
+  .footer strong {
+    font-weight: 500; /* Немного увеличиваем толщину шрифта */
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Тень для текста */
+  }
+  
+  /* Адаптивность для маленьких экранов */
+  @media (max-width: 768px) {
+    .footer {
+      padding: 20px; /* Уменьшаем отступы на маленьких экранах */
+      text-align: center; /* Центрируем текст на маленьких экранах */
+    }
+  
+    .footer::before {
+      display: none; /* Убираем анимацию на маленьких экранах (по желанию) */
+    }
+  
+    .footer-content {
+      align-items: center; /* Центрируем контент на маленьких экранах */
+    }
+  
+    .footer p {
+      justify-content: center; /* Центрируем текст и иконку на маленьких экранах */
+    }
+  }
+  
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация смещения градиента */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Анимация пульсации (изменения размера) */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+/* Анимация сияния (для псевдоэлемента) */
+@keyframes shine {
+    0% {
+        transform: rotate(45deg) translate(-50%, -50%);
+    }
+    100% {
+        transform: rotate(45deg) translate(50%, 50%);
+    }
+}
+
+/* Оформление кнопки */
+button {
+    --button-color: rgba(255, 255, 255, .9);
+    padding: 12px 40px; /* Отступы внутри кнопки */
+    font-size: 16px; /* Размер шрифта кнопки */
+    border-radius: 5px; /* Закругленные уголки */
+    background-color: #4b4d53; /* Цвет фона кнопки */
+    color: #fff; /* Цвет текста */
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border: none; /* Убираем рамку кнопки */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Анимация при наведении */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень для глубины */
+    position: relative; /* Для позиционирования псевдоэлемента */
+    overflow: hidden; /* Скрываем псевдоэлемент за границами кнопки */
+}
+
+/* Эффект при наведении на кнопку */
+button:hover {
+    background-color: #5b5f66; /* Изменение цвета фона при наведении */
+    transform: scale(1.05); /* Немного увеличиваем размер кнопки */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Увеличиваем тень */
+}
+
+/* Эффект при нажатии на кнопку */
+button:active {
+    transform: scale(0.95); /* Немного уменьшаем размер кнопки при нажатии */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Уменьшаем тень */
+}
+
+/* Добавляем псевдоэлемент для эффекта волны */
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    padding-top: 0;
+    background-color: rgba(255, 255, 255, 0.3); /* Цвет волны */
+    border-radius: 100%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, padding-top 0.5s; /* Анимация для волны */
+    opacity: 0;
+}
+
+/* Активируем псевдоэлемент при нажатии */
+button:active::before {
+    width: 120%; /* Увеличиваем размер волны */
+    padding-top: 120%;
+    opacity: 1; /* Показываем волну */
+    transition: width 0s, padding-top 0s; /* Убираем анимацию в момент нажатия */
+}
+
+
+/* Оформление поля ввода для выбора даты */
+input[type="date"] {
+    width: 100%; /* Полная ширина */
+    max-width: 400px; /* Максимальная ширина */
+    padding: 12px 15px; /* Отступы внутри поля */
+    margin-bottom: 20px; /* Отступ снизу */
+    border: none; /* Убираем стандартную рамку */
+    border-radius: 10px; /* Более закругленные уголки */
+    background-color: #333; /* Темный цвет фона поля */
+    color: #fff; /* Цвет текста */
+    font-size: 16px; /* Размер шрифта */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Тень под полем */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Плавный переход */
+}
+
+/* Эффект при фокусировке на поле ввода даты */
+input[type="date"]:focus {
+    background-color: #444; /* Изменение цвета фона при фокусе */
+    outline: none; /* Убираем стандартный контур рамки */
+    box-shadow: 0 0 15px rgba(91, 95, 102, 0.6); /* Эффект тени при фокусе */
+}
+
+/* Стилизация стрелок в поле ввода даты */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-color: #5b5f66; /* Цвет фона индикатора */
+    border-radius: 10px; /* Закругленные уголки */
+    padding: 6px; /* Отступы внутри индикатора */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета */
+}
+
+/* Эффект при наведении на индикатор */
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background-color: #6c7075; /* Эффект при наведении на индикатор */
+}
+
+/* Скрываем стандартные кнопки для стиля */
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+    display: none; /* Скрываем стандартные кнопки */
+}
+
+/* Псевдоэлемент для подсказки */
+input[type="date"]::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Цвет подсказки */
+    font-style: italic; /* Курсив для подсказки */
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black; 
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    z-index: 9999; 
+}
+
+/* Стили для текста загрузки */
+.loading-text {
+    font-family: 'Lobster', cursive; /* Применяем шрифт Lobster */
+    font-size: 3rem; /* Размер шрифта */
+    color: #FF5733; /* Цвет текста */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 87, 51, 0.7); /* Многослойная тень для текста */
+    animation: blink 1s infinite, move 1.5s infinite; /* Анимация мигания и движения текста */
+}
+
+/* Анимация мигания текста */
+@keyframes blink {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Анимация движения текста */
+@keyframes move {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Стили для контейнера с загрузчиком */
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #292E49, #536976); /* Градиент фона */
+    color: white;
+    display: flex;
+    flex-direction: column; /* Вертикальное выравнивание */
+    align-items: center; /* Центрирование по горизонтали */
+    justify-content: center; /* Центрирование по вертикали */
+    z-index: 9999;
+    animation: fadeIn 1s; /* Появление контейнера */
+}
+
+/* Анимация появления контейнера */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Стили для скрытого контента */
+.content {
+    display: none; /* Скрываем основной контент изначально */
+    opacity: 0; /* Начальное состояние невидимы */
+    transition: opacity 0.5s; /* Плавное появление */
+}
+
+.content.show {
+    display: block; /* Показываем контент */
+    opacity: 1; /* Устанавливаем видимость */
+}
+
+/* Загрузка с плавным переходом */
+.loader .loading-text {
+    animation: blink 1s infinite alternate, move 1.5s infinite alternate; /* Чередование анимаций */
+}

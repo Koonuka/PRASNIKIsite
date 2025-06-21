@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Праздники всех стран</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=67949&format=png&color=000000" type="image/x-icon">
+    <script src="libs/gsap/gsap.min.js" defer></script>
+    <script src="libs/swiper/swiper-bundle.min.js" defer></script>
+    <link rel="stylesheet" href="libs/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="css/main1.css">
+    <script src="js/app1.js" defer></script>
+    <script src="js/image-toggle.js" defer></script>
+    <script src="js/holiday-search.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="top-line">
+        <div class="container container-top">
+            <div class="logo">
+                <a href="index.html"><img src="img/logo.svg" alt="Логотип"></a>
+            </div>
+            <nav>
+                <ul class="main-mnu">
+                    <li><a href="Календарь праздников.html" class="nav-link">Календарь праздников</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="swiper slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide">
+                <div class="slide__content">
+                    <div id="countrySelection" class="selection-container">
+                        <h1 class="main-title">Праздники разных стран</h1>
+                        <p class="subtitle">Откройте для себя уникальные традиции и праздники со всего мира</p>
+                        <div class="select-wrapper">
+                            <label for="countrySelect" class="select-label">Выберите страну:</label>
+                            <select id="countrySelect" class="country-select">
+                                <option value="" disabled selected>Выберите страну из списка</option>
+                            </select>
+                            <button id="selectCountryButton" class="primary-button">
+                                <span>Показать праздники</span>
+                            </button>
+                        </div>
+                        <div class="search-wrapper" style="margin-top: 15px;">
+                            <label for="holidaySearchInput" class="select-label">Поиск по названию праздника:</label>
+                            <input type="text" id="holidaySearchInput" class="holiday-search-input" placeholder="Например, Рождество" />
+                            <button id="searchHolidayButton" class="primary-button" style="margin-left:10px;">
+                                <span>Найти праздник</span>
+                            </button>
+                        </div>
+                    </div>
+                  
+                    <div class="country-list" id="countryList" style="display:none;"></div>
+                    <div class="navigation">
+                        <button id="prevHolidayButton" class="nav-button" style="display:none;">&#10094; Предыдущая страница</button>
+                        <button id="nextHolidayButton" class="nav-button" style="display:none;">Следующая страница &#10095;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+            </button>
+            <div class="modal-body">
+                <img id="holidayImage" class="holiday-image" alt="Holiday Image" style="cursor: pointer;" title="Нажмите, чтобы свернуть/развернуть изображение" />
+                <div class="holiday-text">
+                    <h2 id="countryTitle" class="holiday-title"></h2>
+                    <p id="holidayDescription" class="holiday-description"></p>
+                    <p id="holidayDetails" class="holiday-details"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <video src="media/страны.mp4" class="video-background" muted autoplay loop></video>
+</body>
+</html>

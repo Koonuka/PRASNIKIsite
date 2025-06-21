@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Праздники всех стран</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=67949&format=png&color=000000" type="image/x-icon" />
+    <link rel="stylesheet" href="libs/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/main2.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="libs/gsap/gsap.min.js" defer></script>
+    <script src="libs/swiper/swiper-bundle.min.js" defer></script>
+    <script src="js/app2.js" defer></script>
+</head>
+<body>
+    <video src="media/ddddddddddddddddd.mp4" class="video-background" muted autoplay loop playsinline></video>
+
+    <div class="top-line">
+        <div class="container container-top">
+            <div class="logo">
+                <a href="index.html" aria-label="На главную">
+                    <img src="img/logo.svg" alt="Логотип сайта Праздники всех стран" />
+                </a>
+            </div>
+            <nav aria-label="Главное меню">
+                <ul class="main-mnu">
+                    <li><a href="Информация о празднико.html">Информация о праздниках</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <div class="swiper slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide">
+                <div class="slide__content">
+                    <div class="calendar" role="region" aria-label="Календарь праздников">
+
+                        
+                        <h2>Календарь праздников</h2>
+
+                        <div id="calendar" class="calendar-container">
+                            <div class="calendar-header">
+                                <button class="prev-month" aria-label="Предыдущий месяц">
+                                    <span aria-hidden="true">‹</span>
+                                </button>
+                                <div class="month-year" aria-live="polite"></div>
+                                <button class="next-month" aria-label="Следующий месяц">
+                                    <span aria-hidden="true">›</span>
+                                </button>
+                            </div>
+
+                            <div class="weekdays" role="row">
+                                <span role="columnheader">Пн</span>
+                                <span role="columnheader">Вт</span>
+                                <span role="columnheader">Ср</span>
+                                <span role="columnheader">Чт</span>
+                                <span role="columnheader">Пт</span>
+                                <span role="columnheader">Сб</span>
+                                <span role="columnheader">Вс</span>
+                            </div>
+
+                            <div id="days" class="days" role="grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Закрыть">X</button>
+            <div class="modal-body" id="modalTitle"></div>
+        </div>
+    </div>
+</body>
+</html>

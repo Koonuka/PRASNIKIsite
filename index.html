@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Праздники всех стран</title>
+    <link rel="shortcut icon" href="https://img.icons8.com/?size=100&id=67949&format=png&color=000000" type="image/x-icon">
+    <script src="libs/gsap/gsap.min.js" defer></script>
+    <script src="libs/swiper/swiper-bundle.min.js" defer></script>
+    <link rel="stylesheet" href="libs/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/app.js" defer></script>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <span class="loading-text">Загрузка...</span>
+    </div>
+    
+    <div class="top-line hidden">
+        <div class="container container-top">
+            <div>
+                <div class="logo">
+                    <img src="img/logo.svg" alt="Alt">
+                </div>
+            </div>
+            <div>
+                <ul class="main-mnu">
+                    <li><a href="Информация о празднико.html">Информация о праздниках</a></li>
+                    <li><a href="Календарь праздников.html">Календарь праздников</a></li>
+                    <li>
+                        
+                    </li>
+                </ul>
+                
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="swiper slider hidden">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide">
+                <div class="slide__content">
+                    <h2>Праздники всех стран</h2>
+                    <p>Узнай о праздниках всего мира и традиции их проведения</p>
+                    
+                   
+                </div>
+            </div>
+    
+            <div class="swiper-slide slide">
+                <div class="slide__content">
+                    <h2>Поиск праздников по стране и дате</h2>
+                    <div class="search-container">
+                        <div class="country-search">
+                            <input type="text" id="country-search" placeholder="Введите страну" />
+                            <button id="search-button">Искать</button>
+                        </div>
+                        <div class="date-search">
+                            <input type="date" id="date-search" />
+                            <button id="date-search-button">Искать по дате</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Модальное окно -->
+                <div id="modal" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <span id="close-modal" class="close">×</span>
+                        <h2 id="country-title">Результаты</h2>
+                        <div id="results"></div>
+                        <div class="navigation-buttons">
+                            <button id="prev-button" style="display: none;">Предыдущая</button>
+                            <button id="next-button" style="display: none;">Следующая</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    
+            <div class="swiper-slide slide">
+                <div class="slide__content">
+                    <section id="calendar">
+                        <h2>Календарь праздников</h2>
+                        <h1 id="today-date"></h1>
+                        <ul id="holidays-list"></ul>
+                    </section>
+                    <div id="results-navigation">
+                        <button id="prev-button" style="display:none;">Предыдущая</button>
+                        <button id="next-button" style="display:none;">Следующая</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    
+    <video src="media/ddddddddddddddddd.mp4" class="video-background" muted></video>
+
+    
+</body>
+</html>

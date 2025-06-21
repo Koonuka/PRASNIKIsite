@@ -1,0 +1,1084 @@
+* {
+	margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'VT323', 'Courier New', monospace;
+}
+#countrySelection {
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative; /* Необходимо для правильного позиционирования выпадающего списка */
+}
+:root {
+    --bg-color: #000000;
+    --terminal-bg: #000033;
+    --code-bg: #000066;
+    --text-color: #00FF00;
+    --accent-color: #FF8C00;
+    --string-color: #FFFF00;
+    --keyword-color: #00FFFF;
+    --comment-color: #00AA00;
+    --border-color: #00FF00;
+    --cursor-color: #00FF00;
+    --selection-bg: #003300;
+    --terminal-header: #001100;
+    --terminal-border: #00FF00;
+    --shadow-color: rgba(0, 255, 0, 0.2);
+    --scanline-color: rgba(0, 255, 0, 0.1);
+    --glow-color: rgba(0, 255, 0, 0.5);
+    --accent-glow: rgba(255, 140, 0, 0.5);
+    --primary-color: #E0E0E0;
+    --secondary-color: #00F5FF;
+    --text-color-light: rgba(255, 255, 255, 0.95); /* Более яркий белый */
+    --text-color-dark: #222; /* Темнее серый для лучшего контраста */
+    --font-family: 'Roboto', sans-serif; /* Современный шрифт */
+}
+/* Стили для контейнера кнопок навигации */
+#navigation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 30px 0;
+    padding: 20px;
+}
+
+/* Стили для кнопок */
+#prevButton, #nextButton {
+    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2),
+                -5px -5px 15px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффекты при наведении на кнопки */
+#prevButton:hover, #nextButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3),
+                -8px -8px 20px rgba(255, 255, 255, 0.08);
+}
+
+/* Эффект при нажатии на кнопку */
+#prevButton:active, #nextButton:active {
+    transform: translateY(0);
+    box-shadow: inset 5px 5px 10px rgba(0, 0, 0, 0.2),
+                inset -5px -5px 10px rgba(255, 255, 255, 0.05);
+}
+/* Общие стили для кнопок в модальном окне */
+.nav-buttons {
+    display: flex; /* Используем флекс для выравнивания кнопок по горизонтали */
+    justify-content: space-between; /* Отодвигаем кнопки в стороны */
+    margin-top: 20px; /* Отступ между текстом и кнопками */
+}
+
+.nav-button{
+    flex: 1; /* Каждая кнопка занимает равное пространство */
+    min-height: 40px; /* Фиксированная минимальная высота для предотвращения прыжков */
+    margin: 0 10px; /* Отступы между кнопками */
+    background-color: #333; /* Фоновый цвет */
+    color: white; /* Цвет текста */
+    border: none; /* Без границ */
+    border-radius: 5px; /* Скругленные углы */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s; /* Плавный переход для фона */
+}
+
+/* Эффект при наведении на кнопки */
+.nav-button:hover {
+    background-color: #444; /* Более светлый фон при наведении */
+}
+.button-container {
+    display: flex; /* Используем флекс для выравнивания кнопок */
+    justify-content: space-between; /* Отправляем кнопки в стороны */
+    margin-top: 20px; /* Отступ сверху */
+}
+/* Скрываем пустое пространство, когда кнопка неактивна */
+.nav-button.hidden {
+    display: none;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        var(--scanline-color) 0px,
+        var(--scanline-color) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1000;
+    animation: scanline 8s linear infinite;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        var(--bg-color) 100%
+    );
+    pointer-events: none;
+    z-index: 999;
+    animation: flicker 0.15s infinite;
+}
+
+.slider {
+    height: 100vh;
+    background: transparent;
+    position: relative;
+    padding-top: 60px;
+}
+
+.slider .slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slide__content {
+    background: rgba(0, 0, 51, 0.85);
+    padding: 30px;
+    border-radius: 0;
+    box-shadow: 0 0 20px var(--glow-color);
+    max-width: 1500px;
+    width: 95%;
+    margin: 0 auto;
+    border: 2px solid var(--border-color);
+    position: relative;
+    backdrop-filter: blur(3px);
+}
+
+.slide__content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: var(--terminal-header);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.slide__content h2 {
+    font-size: calc(var(--index) * 2.2); /* Немного больше */
+    text-transform: uppercase;
+    letter-spacing: calc(var(--index) * 1.85); /* Увеличенный интервал */
+    margin-bottom: calc(var(--index) * 2.5); /* Больше отступ */
+    position: relative;
+    color: var(--primary-color); /* Яркий цвет для заголовка */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Тень для заголовка */
+}
+
+.slide__content h2::after {
+    content: '';
+    height: 2px; /* Толще линия */
+    width: 30%; /* Длиннее линия */
+    background-color: var(--accent-color); /* Яркий акцент */
+    position: absolute;
+    left: 35%; /* Более точное центрирование */
+    bottom: calc(var(--index) * -1.2); /* Ближе к тексту */
+    animation: lineAnimation 2s linear infinite alternate; /* Анимированная линия */
+}
+
+@keyframes lineAnimation {
+    from { width: 30%; }
+    to { width: 50%; }
+}
+
+.slide__content p {
+    font-size: calc(var(--index) * 1); /* Немного больше */
+    text-transform: uppercase;
+    color: var(--text-color-light);
+    letter-spacing: calc(var(--index) * 0.3); /* Больше интервал */
+    margin-bottom: calc(var(--index) * 2.8); /* Больше отступ */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Тень для текста */
+}
+
+button {
+    --button-color: var(--accent-color); /* Яркий цвет кнопки */
+    padding: 11px 45px; /* Больше места */
+    font-size: 17px; /* Больше шрифт */
+    border-radius: 12em; /* Более закругленные края */
+    background-color: transparent;
+    border: 3px solid var(--button-color); /* Толще обводка */
+    color: var(--button-color);
+    text-transform: uppercase;
+    letter-spacing: 0.25rem; /* Больше интервал */
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease; /* Плавные переходы */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Тень для кнопки */
+}
+
+button:hover {
+    background-color: var(--button-color);
+    color: var(--text-color-light);
+    transform: translateY(-3px); /* Поднимаем кнопку при наведении */
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.slider-navigation {
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: 20px; /* Ближе к низу */
+    left: 50%;
+    transform: translateX(-50%); /* Центрирование по горизонтали */
+    display: flex;
+    gap: 15px; /* Расстояние между кнопками */
+}
+
+.slider-navigation > * {
+    border: 2px solid var(--accent-color); /* Яркий акцент */
+    border-radius: 12em; /* Больше закругление */
+    width: 60px; /* Больше размер */
+    height: 60px; /* Больше размер */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color-light);
+    font-size: 1.5em; /* Больше размер стрелок */
+    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Плавные переходы */
+}
+
+.slider-navigation > *:hover {
+    background-color: var(--accent-color);
+    color: var(--text-color-dark);
+    border-color: var(--primary-color);
+}
+
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.3;
+    filter: grayscale(100%) contrast(150%) brightness(0.7) sepia(20%);
+}
+
+.video-background.change {
+    opacity: 1;
+}
+
+/* Interface */
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+}
+
+.top-line {
+    background-color: var(--terminal-header);
+    border-bottom: 2px solid var(--border-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.logo {
+    border: 3px solid var(--primary-color); /* Более яркая обводка */
+    border-radius: 12em; /* Больше закругление */
+    width: 60px; /* Больше размер */
+    height: 60px; /* Больше размер */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.85; /* Более видимый */
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo img {
+    width: 50px; /* Больше размер */
+    height: 40px;
+    filter: brightness(1.5) contrast(1.2);
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 0 5px rgba(0, 245, 255, 0.5));
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.8));
+}
+
+@media (max-width: 768px) {
+    .container-top {
+        height: 60px;
+    }
+
+    .logo img {
+        height: 40px;
+    }
+
+    .main-mnu {
+        gap: 15px;
+    }
+
+    .nav-link {
+        font-size: 14px;
+    }
+
+    .slide__content {
+        padding: 20px;
+    }
+
+    .modal-content {
+        margin: 20px auto;
+        padding: 20px;
+    }
+}
+/* Основные стили для меню */
+.main-mnu {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.nav-link::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.nav-link:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Общие стили модального окна */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    backdrop-filter: blur(3px);
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.modal-content {
+    position: relative;
+    background-color: rgba(0, 0, 51, 0.85);
+    margin: 50px auto;
+    padding: 30px;
+    width: 220%; /* Doubled from 110% */
+    max-width: 1500px; /* Doubled from 1000px */
+    border: 2px solid var(--border-color);
+    box-shadow: 0 0 20px var(--glow-color);
+    backdrop-filter: blur(3px);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: var(--terminal-header);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 72px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    background: var(--terminal-header);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 0 6px var(--glow-color);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.close-button span.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    transition: transform 0.2s;
+}
+
+.close-button .red { background: #ff5f56; }
+.close-button .yellow { background: #ffbd2e; }
+.close-button .green { background: #27c93f; }
+
+.close-button:hover {
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.close-button:hover span.dot {
+    animation: glitchDot 0.6s steps(2, end) infinite;
+}
+
+.close-button:active {
+    transform: scale(0.95);
+}
+
+@keyframes glitchDot {
+    0%   { transform: translate(0,0); }
+    20%  { transform: translate(-1px, 1px); }
+    40%  { transform: translate(1px, -1px); }
+    60%  { transform: translate(-1px, -1px); }
+    80%  { transform: translate(1px, 1px); }
+    100% { transform: translate(0,0); }
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.holiday-image {
+    width: 100%;
+    max-height: 800px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    filter: grayscale(50%) contrast(120%);
+    transition: all 0.3s ease;
+}
+
+.holiday-image.mini {
+    width: 150px;
+    max-height: 100px;
+    position: absolute;
+    top: 40px; /* ниже кнопки закрытия */
+    right: 20px;
+    z-index: 1;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--glow-color);
+    border-radius: 8px;
+    opacity: 0.8;
+}
+
+.holiday-image.mini:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent-color);
+}
+
+.holiday-text {
+    padding: 20px;
+}
+
+.holiday-title {
+    font-size: 28px;
+    color: var(--keyword-color);
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px var(--glow-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.holiday-title::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.holiday-description {
+    color: var(--text-color);
+    font-size: 23px;
+    line-height: 1.8;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.holiday-description .dots {
+    color: var(--accent-color);
+    cursor: pointer;
+    font-weight: 700;
+    animation: blinkDots 1s steps(2, start) infinite;
+}
+
+@keyframes blinkDots {
+    from { opacity: 1; }
+    to   { opacity: 0.2; }
+}
+
+.holiday-details {
+    color: var(--string-color);
+    font-size: 24px;
+    font-style: italic;
+    padding: 15px;
+    background: var(--code-bg);
+    border: 2px solid var(--border-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.holiday-details::before {
+    content: '// ';
+    color: var(--comment-color);
+}
+
+.selection-container {
+    text-align: center;
+}
+
+.select-wrapper {
+    margin-bottom: 30px;
+}
+
+.select-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 25px;
+    color: var(--text-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.select-label::before {
+    content: '// ';
+    color: var(--comment-color);
+}
+
+.country-select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    background-color: var(--code-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.country-select:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.country-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.primary-button {
+    background: var(--code-bg);
+    color: var(--text-color);
+    border: 2px solid var(--border-color);
+    padding: 10px 20px;
+    border-radius: 0;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.primary-button::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.primary-button:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.country-list {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20px;
+    padding: 20px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--code-bg);
+}
+
+.country-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.country-list::-webkit-scrollbar-track {
+    background: var(--code-bg);
+    border: 1px solid var(--border-color);
+}
+
+.country-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.holiday-card {
+    min-width: 300px;
+    background: var(--code-bg);
+    border: 2px solid var(--border-color);
+    padding: 20px;
+    flex: 0 0 auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+.holiday-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.holiday-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+    margin-bottom: 15px;
+    filter: grayscale(50%) contrast(120%);
+}
+
+.holiday-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--keyword-color);
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.holiday-card h3::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.holiday-card p {
+    color: var(--text-color);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+.holiday-card .date {
+    color: var(--string-color);
+    font-size: 14px;
+    font-style: italic;
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+@media (max-width: 768px) {
+    .holiday-card {
+        min-width: 250px;
+    }
+    
+    .holiday-card img {
+        height: 200px;
+    }
+    
+    .holiday-image {
+        max-height: 400px;
+    }
+    
+    .holiday-image.mini {
+        width: 80px;
+        max-height: 50px;
+        top: 40px;
+        right: 20px;
+    }
+    
+    .main-title {
+        font-size: 1.8em;
+    }
+    
+    .nav-link {
+        font-size: 16px;
+    }
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.nav-button {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: var(--shadow-1), var(--neon-shadow);
+}
+
+.nav-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-2), var(--neon-shadow);
+}
+
+.main-title {
+    font-size: 2.5em;
+    color: var(--text-color);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    text-shadow: 0 0 10px var(--glow-color);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.subtitle {
+    font-size: 1.2em;
+    color: var(--comment-color);
+    margin-bottom: 30px;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 0 0 5px var(--glow-color);
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes flicker {
+    0% { opacity: 0.9; }
+    5% { opacity: 0.85; }
+    10% { opacity: 0.9; }
+    15% { opacity: 0.85; }
+    20% { opacity: 0.9; }
+    25% { opacity: 0.85; }
+    30% { opacity: 0.9; }
+    35% { opacity: 0.85; }
+    40% { opacity: 0.9; }
+    45% { opacity: 0.85; }
+    50% { opacity: 0.9; }
+    55% { opacity: 0.85; }
+    60% { opacity: 0.9; }
+    65% { opacity: 0.85; }
+    70% { opacity: 0.9; }
+    75% { opacity: 0.85; }
+    80% { opacity: 0.9; }
+    85% { opacity: 0.85; }
+    90% { opacity: 0.9; }
+    95% { opacity: 0.85; }
+    100% { opacity: 0.9; }
+}
+
+/* Мобильные стили */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+
+    .main-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .select-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .country-select {
+        width: 100%;
+        font-size: 18px;
+    }
+
+    .primary-button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* Стили для модального окна на мобильных */
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 15px;
+    }
+
+    .modal-body {
+        flex-direction: column;
+    }
+
+    .holiday-image {
+        width: 100%;
+        max-height: 250px;
+    }
+
+    .holiday-text {
+        padding: 15px 0;
+    }
+
+    .holiday-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .holiday-description {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+
+    .holiday-details {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Стили для мини-картинки на мобильных */
+    .holiday-image.mini {
+        width: 80px;
+        max-height: 50px;
+        top: 40px;
+        right: 20px;
+    }
+
+    /* Стили для навигации */
+    .navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Стили для верхней панели */
+    .top-line {
+        padding: 10px 0;
+    }
+
+    .logo img {
+        height: 30px;
+    }
+
+    .main-mnu {
+        display: none;
+    }
+
+    /* Стили для слайдера */
+    .swiper {
+        height: auto;
+    }
+
+    .slide {
+        padding: 20px 0;
+    }
+}
+
+/* Стили для очень маленьких экранов */
+@media screen and (max-width: 480px) {
+    .main-title {
+        font-size: 20px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .holiday-title {
+        font-size: 20px;
+    }
+
+    .holiday-description {
+        font-size: 16px;
+    }
+
+    .holiday-image.mini {
+        width: 100px;
+        max-height: 70px;
+    }
+}
+
+/* ================= Поиск по названию праздника ================ */
+.search-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.holiday-search-input {
+    padding: 12px 20px;
+    background: var(--code-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 0;
+    min-width: 260px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.holiday-search-input::placeholder {
+    color: var(--comment-color);
+    opacity: 0.8;
+}
+
+.holiday-search-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.holiday-result-button {
+    width: 100%;
+    text-align: left;
+    background: var(--code-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    padding: 14px 22px;
+    border-radius: 0;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.holiday-result-button span::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.holiday-result-button:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+.country-list.search-mode {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-y: auto;
+    max-height: 400px;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+.country-list.search-mode::-webkit-scrollbar {
+    width: 8px;
+}
+
+.country-list.search-mode::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    box-shadow: 0 0 10px var(--glow-color);
+}
+
+/* ============================================================ */
+
+/* Квадратные углы для кнопки поиска */
+.search-wrapper .primary-button{
+    border-radius: 0 !important;
+}
+
+/* Применяем к кнопкам стран те же стили, что и для holiday-result-button */
+.country-list button {
+    width: 100%;
+    text-align: left;
+    background: var(--code-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    padding: 14px 22px;
+    border-radius: 0;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.country-list button span::before {
+    content: '> ';
+    color: var(--accent-color);
+}
+
+.country-list button:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-3px);
+}
+
+html {
+    font-size: 24px; /* Further increased base font size */
+}
